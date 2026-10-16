@@ -1,0 +1,253 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  width: 100%;
+}
+
+.dashboard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  /* marge en %, alignee sur la taskbar */
+  padding: 32px 4% 48px;
+  padding-bottom: max(48px, env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.dashboard__greeting {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* large title ios */
+.dashboard__greeting-title {
+  font-size: clamp(28px, 5vw, 34px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.dashboard__greeting-subtitle {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+}
+
+.dashboard__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dashboard__header .button {
+  flex-shrink: 0;
+}
+
+.dashboard__actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* phones: content clears the floating tab bar */
+@media (max-width: 640px) {
+  .dashboard {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard {
+    padding-top: 20px;
+    padding-inline: max(16px, env(safe-area-inset-left)) max(16px, env(safe-area-inset-right));
+  }
+
+  .dashboard__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard__actions .button {
+    flex: 1;
+  }
+}
+
+.dashboard__skeletons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.dashboard__skeleton {
+  height: 304px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  animation: skeleton-card 1s ease-in-out infinite alternate;
+}
+
+@keyframes skeleton-card {
+  to {
+    opacity: 0.5;
+  }
+}
+
+/* empty dashboard */
+.dashboard__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 48px 20px;
+  text-align: center;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+
+.dashboard__empty-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.dashboard__empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.dashboard__empty-actions .button {
+  text-decoration: none;
+}
+
+.dashboard__no-match {
+  padding: 32px 0;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.dashboard__retry {
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* pages login / register / confirm : carte de verre centree */
+.auth {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: max(24px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+}
+
+.auth__card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: min(400px, 100%);
+  padding: 32px 24px 24px;
+  border-radius: var(--radius-xl);
+  animation: auth-in 0.5s var(--ease-spring);
+}
+
+.auth__logo {
+  width: 64px;
+  height: 64px;
+  align-self: center;
+  border-radius: 16px;
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.08);
+}
+
+.auth__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+
+.auth__title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth__error {
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--color-danger-text);
+  background: var(--color-danger-bg);
+  border-radius: var(--radius-sm);
+}
+
+.auth__form .button {
+  margin-top: 4px;
+  width: 100%;
+  min-height: 50px;
+  font-size: 17px;
+}
+
+.auth__status {
+  font-size: 15px;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.auth__status--error {
+  color: var(--color-danger-text);
+}
+
+.auth__footer {
+  font-size: 15px;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.auth__footer a {
+  font-weight: 600;
+  color: var(--color-accent-default);
+  text-decoration: none;
+}
+
+.auth__card > .button {
+  min-height: 50px;
+  font-size: 17px;
+  text-decoration: none;
+}
+
+@keyframes auth-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+.form-hint {
+  padding: 0 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--color-text-placeholder);
+}

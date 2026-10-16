@@ -1,0 +1,255 @@
+.crypto-body__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+.crypto-body__coin {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.crypto-body__pair {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.crypto-body__price {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.crypto-body__chart {
+  width: 100%;
+  height: 70px;
+  overflow: visible;
+}
+
+/* ---- coin price ---- */
+
+.coin-now {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.coin-now__hero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+/* the stats sit at the bottom of a tall card */
+.coin-now__stats {
+  margin-top: auto;
+}
+
+/* wide: price on the left, a column of stat tiles on the right */
+@container widget (min-width: 520px) {
+  .coin-now {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(170px, 36%);
+    align-items: center;
+    gap: 24px;
+  }
+
+  .coin-now__stats {
+    grid-template-columns: 1fr;
+    margin-top: 0;
+  }
+}
+
+@container widget (max-height: 150px) {
+  .coin-now__stats {
+    display: none;
+  }
+}
+
+/* ---- price history ---- */
+
+/* compact: head, price, a chart taking all the height left, stats */
+.coin-history {
+  display: grid;
+  flex: 1;
+  grid-template-rows: auto auto minmax(56px, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'head'
+    'price'
+    'chart'
+    'stats';
+  gap: 10px;
+  min-height: 0;
+}
+
+.coin-history__head {
+  grid-area: head;
+}
+
+.coin-history__price {
+  grid-area: price;
+}
+
+.coin-history__chart {
+  position: relative;
+  grid-area: chart;
+  min-height: 56px;
+}
+
+/* the svg follows its box, whatever height the card gives it */
+.coin-history__chart .crypto-body__chart {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+}
+
+.coin-history__stats {
+  grid-area: stats;
+}
+
+/* open is the first thing to go on a narrow card */
+@container widget (max-width: 359px) {
+  .coin-history__stats > :first-child {
+    display: none;
+  }
+}
+
+.coin-history__axis {
+  position: absolute;
+  display: none;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+  background: var(--color-fill);
+}
+
+.coin-history__axis--high {
+  top: 0;
+  right: 0;
+}
+
+.coin-history__axis--low {
+  right: 0;
+  bottom: 0;
+}
+
+.coin-history__axis--start {
+  bottom: -22px;
+  left: 0;
+}
+
+.coin-history__axis--end {
+  right: 0;
+  bottom: -22px;
+}
+
+@container widget (min-width: 0px) {
+  .crypto-body__price {
+    font-size: clamp(28px, 9cqmin, 44px);
+  }
+}
+
+/* a big chart gets its scale and time axis */
+@container widget (min-height: 320px) and (min-width: 380px) {
+  .coin-history {
+    row-gap: 14px;
+  }
+
+  .coin-history__chart {
+    margin-bottom: 22px;
+  }
+
+  .coin-history__axis {
+    display: block;
+  }
+}
+
+/* wide and short: the numbers in a column on the left, the chart fills the right */
+@container widget (min-width: 560px) and (min-aspect-ratio: 2 / 1) {
+  .coin-history {
+    grid-template-rows: auto auto 1fr;
+    grid-template-columns: minmax(190px, 32%) minmax(0, 1fr);
+    grid-template-areas:
+      'head chart'
+      'price chart'
+      'stats chart';
+    column-gap: 24px;
+  }
+
+  /* a compact label / value list, like the stocks app, tiles would not fit beside the chart */
+  .coin-history__stats {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-self: end;
+    padding-top: 10px;
+    border-top: 0.5px solid var(--color-separator);
+  }
+
+  .coin-history__stats > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0;
+    background: none;
+  }
+
+  .coin-history__stats > :first-child {
+    display: flex;
+  }
+
+  .coin-history__stats .widget-body__stat-label {
+    margin: 0;
+    font-size: 13px;
+  }
+
+  .coin-history__stats .widget-body__stat-value {
+    font-size: 15px;
+  }
+}
+
+@container widget (max-height: 180px) {
+  .coin-history__stats {
+    display: none;
+  }
+}
+
+.crypto-body__chart-line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.crypto-body__chart-area {
+  stroke: none;
+  opacity: 0.18;
+}
+
+.crypto-body__chart--up .crypto-body__chart-line {
+  stroke: var(--color-success-text);
+}
+
+.crypto-body__chart--up .crypto-body__chart-area {
+  fill: var(--color-success-text);
+}
+
+.crypto-body__chart--down .crypto-body__chart-line {
+  stroke: var(--color-danger-text);
+}
+
+.crypto-body__chart--down .crypto-body__chart-area {
+  fill: var(--color-danger-text);
+}

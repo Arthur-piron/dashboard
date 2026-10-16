@@ -1,0 +1,157 @@
+.widget-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.widget-body__note {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.widget-body__note--error {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text);
+}
+
+.widget-body__footer {
+  margin-top: auto;
+  font-size: 11px;
+  color: var(--color-text-placeholder);
+}
+
+/* petits blocs communs aux differents widgets */
+.widget-body__subtitle {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+/* zero specificity, so each widget can reshape its own stats */
+:where(.widget-body__stats) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  width: 100%;
+  padding-top: 10px;
+  border-top: 0.5px solid var(--color-separator);
+}
+
+.widget-body__stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: 2px;
+}
+
+.widget-body__stat-value {
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.widget-body__big {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.widget-body__data {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  /* more than the card holds scrolls here, under a footer that stays in place */
+  min-height: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* last good payload, shown dimmed while the widget is failing */
+.widget-body__data--stale {
+  opacity: 0.5;
+}
+
+.widget-body__skeleton {
+  height: 12px;
+  width: 80%;
+  background: var(--color-fill-strong);
+  border-radius: var(--radius-full);
+  animation: skeleton-pulse 1s ease-in-out infinite alternate;
+}
+
+.widget-body__skeleton--big {
+  height: 36px;
+  width: 45%;
+  border-radius: var(--radius-sm);
+}
+
+.widget-body__skeleton--short {
+  width: 50%;
+}
+
+@keyframes skeleton-pulse {
+  to {
+    opacity: 0.4;
+  }
+}
+
+/* ---- adaptive layouts, only on the dashboard where the card is a "widget" size container ----
+   a bigger card shows more and lays it out differently; type grows a little, never past a cap */
+
+@container widget (min-width: 0px) {
+  .widget-body__big {
+    /* follows whichever side of the card is short, so it never crowds a wide or a tall card */
+    font-size: clamp(36px, min(12cqi, 24cqb), 64px);
+  }
+}
+
+/* stats become tiles once the card has room for them */
+@container widget (min-height: 290px) or (min-width: 520px) {
+  :where(.widget-body__stats--adaptive) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+    gap: 8px;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  :where(.widget-body__stats--adaptive > div) {
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    background: var(--color-fill);
+  }
+
+  .widget-body__stats--adaptive .widget-body__stat-value {
+    font-size: 17px;
+  }
+}
+
+/* on the dashboard the card has a fixed size: an overflowing body scrolls inside it
+   the 8px bleed keeps room for hover backgrounds that reach past the text */
+@container widget (min-width: 0px) {
+  .widget-body__data {
+    margin: 0 -8px;
+    padding: 0 8px;
+    overflow: hidden auto;
+    scrollbar-width: none;
+  }
+
+  .widget-body__data::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* very short card: the timestamp gives its room to the data */
+@container widget (max-height: 150px) {
+  .widget-body__footer {
+    display: none;
+  }
+}

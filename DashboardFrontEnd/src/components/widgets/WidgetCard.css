@@ -1,0 +1,162 @@
+/* glass widget card, ios home screen widget corners */
+.widget-card {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  min-height: 0;
+  padding: 16px 18px 18px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  animation: widget-in 0.45s var(--ease-spring) backwards;
+  transition: box-shadow 0.3s ease, opacity 0.2s ease;
+}
+
+.widget-card:hover {
+  box-shadow: var(--glass-highlight), var(--shadow-hover);
+}
+
+.widget-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+.widget-card__heading {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* discreet title, like the ios home screen */
+.widget-card__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-card__subtitle {
+  font-size: 12px;
+  color: var(--color-text-placeholder);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-card__tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: -6px -8px 0 0;
+}
+
+.widget-card__tool,
+.widget-card__drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: var(--color-text-placeholder);
+  background: none;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.widget-card__tool:hover,
+.widget-card__drag-handle:hover,
+.widget-card__tool[aria-expanded='true'] {
+  color: var(--color-text-primary);
+  background: var(--color-fill);
+}
+
+.widget-card__drag-handle {
+  cursor: grab;
+  touch-action: none;
+}
+
+.widget-card__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+.widget-card__content::-webkit-scrollbar {
+  display: none;
+}
+
+.widget-card__resize-handle {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  display: flex;
+  padding: 4px;
+  color: var(--color-text-secondary);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: nwse-resize;
+  touch-action: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.widget-card:hover .widget-card__resize-handle,
+.widget-card__resize-handle:focus-visible,
+.widget-card--resizing .widget-card__resize-handle {
+  opacity: 1;
+}
+
+/* lifted while dragged, like an ios jiggle-mode widget */
+.widget-card--dragging {
+  z-index: 5;
+  cursor: grabbing;
+  background: var(--glass-bg-strong);
+  box-shadow: var(--glass-highlight), 0 28px 64px rgba(0, 0, 0, 0.24), 0 8px 20px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.2s ease;
+  will-change: transform;
+}
+
+.widget-card__header--draggable {
+  cursor: grab;
+}
+
+.widget-card--dragging .widget-card__drag-handle {
+  cursor: grabbing;
+}
+
+.widget-card--resizing {
+  z-index: 5;
+  outline: 2px solid var(--color-accent-default);
+  outline-offset: 2px;
+}
+
+@media (hover: none) {
+  .widget-card__resize-handle {
+    opacity: 1;
+  }
+}
+
+@keyframes widget-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}

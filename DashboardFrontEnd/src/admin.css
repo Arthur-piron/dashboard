@@ -1,0 +1,120 @@
+/* ios inset grouped list in glass, one row per account */
+.admin-list {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+
+.admin-list--loading {
+  min-height: 240px;
+  animation: skeleton-card 1s ease-in-out infinite alternate;
+}
+
+.admin-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(180px, 1.2fr) 2fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+}
+
+.admin-row + .admin-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 0;
+  border-top: 0.5px solid var(--color-separator);
+}
+
+.admin-row__identity {
+  min-width: 0;
+}
+
+.admin-row__name {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.admin-row__you {
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.admin-row__email {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-row__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+}
+
+.admin-row__stat {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-pill {
+  padding: 2px 9px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+}
+
+.admin-pill--admin {
+  color: var(--color-accent-default);
+  background: var(--color-accent-tint);
+}
+
+.admin-pill--pending {
+  color: var(--color-text-secondary);
+  background: var(--color-fill);
+}
+
+.admin-row__actions {
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .admin-row {
+    grid-template-columns: 1fr auto;
+  }
+
+  .admin-row__meta {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-row {
+    grid-template-columns: 1fr;
+    padding: 14px 16px;
+  }
+
+  .admin-row__actions {
+    grid-row: 3;
+  }
+
+  .admin-row__actions .button {
+    flex: 1;
+  }
+}

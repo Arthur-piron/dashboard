@@ -1,0 +1,243 @@
+/* couleurs systeme ios (clair / sombre), choisies par data-theme sur <html> (voir useTheme.js) */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --color-bg-page: #f2f2f7;
+  --color-bg-toolbar: rgba(249, 249, 251, 0.62);
+  --color-border-toolbar: rgba(60, 60, 67, 0.16);
+  --color-bg-surface: #ffffff;
+  --color-bg-surface-hover: rgba(118, 118, 128, 0.12);
+  --color-border-default: rgba(60, 60, 67, 0.14);
+  --color-text-primary: #000000;
+  --color-text-secondary: rgba(60, 60, 67, 0.64);
+  --color-text-placeholder: rgba(60, 60, 67, 0.36);
+  --color-accent-default: #007aff;
+  --color-accent-contrast: #ffffff;
+  --color-accent-tint: rgba(0, 122, 255, 0.12);
+  --color-success-bg: rgba(52, 199, 89, 0.16);
+  --color-success-text: #248a3d;
+  --color-danger-bg: rgba(255, 59, 48, 0.12);
+  --color-danger-text: #d70015;
+  --color-fill: rgba(118, 118, 128, 0.12);
+  --color-fill-strong: rgba(120, 120, 128, 0.2);
+  --color-separator: rgba(60, 60, 67, 0.18);
+  --color-switch-on: #34c759;
+
+  /* materiau liquid glass : fond translucide, fin liseret, reflet discret en haut */
+  --glass-bg: rgba(255, 255, 255, 0.74);
+  --glass-bg-strong: rgba(255, 255, 255, 0.86);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.04), 0 12px 32px rgba(0, 0, 0, 0.08);
+  --color-avatar: #8e8e93;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-bg-page: #000000;
+  --color-bg-toolbar: rgba(22, 22, 24, 0.6);
+  --color-border-toolbar: rgba(84, 84, 88, 0.4);
+  --color-bg-surface: #1c1c1e;
+  --color-bg-surface-hover: rgba(118, 118, 128, 0.24);
+  --color-border-default: rgba(84, 84, 88, 0.5);
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(235, 235, 245, 0.64);
+  --color-text-placeholder: rgba(235, 235, 245, 0.32);
+  --color-accent-default: #0a84ff;
+  --color-accent-contrast: #ffffff;
+  --color-accent-tint: rgba(10, 132, 255, 0.2);
+  --color-success-bg: rgba(48, 209, 88, 0.18);
+  --color-success-text: #30d158;
+  --color-danger-bg: rgba(255, 69, 58, 0.18);
+  --color-danger-text: #ff6961;
+  --color-fill: rgba(118, 118, 128, 0.24);
+  --color-fill-strong: rgba(120, 120, 128, 0.36);
+  --color-separator: rgba(84, 84, 88, 0.55);
+  --color-switch-on: #30d158;
+
+  --glass-bg: rgba(28, 28, 30, 0.74);
+  --glass-bg-strong: rgba(36, 36, 38, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
+  --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.4);
+  --color-avatar: #636366;
+}
+
+:root {
+  /* valeurs communes aux deux themes */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-full: 999px;
+  --shadow-card: var(--glass-shadow);
+  --glass-blur: blur(28px) saturate(180%);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Inter', system-ui,
+    'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  background: var(--color-bg-page);
+  color: var(--color-text-primary);
+  /* fondu au changement de theme */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--color-accent-tint);
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-accent-default) 55%, transparent);
+  outline-offset: 2px;
+}
+
+/* surface liquid glass reutilisable */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+
+/* boutons capsule facon ios */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 20px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-accent-default);
+  background: var(--color-accent-tint);
+  border: none;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease-spring), filter 0.2s ease, opacity 0.2s ease;
+}
+
+.button--primary {
+  color: var(--color-accent-contrast);
+  background: var(--color-accent-default);
+}
+
+.button--danger {
+  color: var(--color-danger-text);
+  background: var(--color-danger-bg);
+}
+
+.button--danger-solid {
+  color: var(--color-accent-contrast);
+  background: var(--color-danger-text);
+}
+
+.button--small {
+  min-height: 32px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+.button:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* champ de saisie facon ios */
+.field {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 16px;
+  color: var(--color-text-primary);
+  background: var(--color-fill);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.field::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.field:focus {
+  background: var(--glass-bg-strong);
+  border-color: var(--color-accent-default);
+  box-shadow: 0 0 0 4px var(--color-accent-tint);
+}
+
+/* sans backdrop-filter, ou transparence reduite : surfaces opaques */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  /* meme specificite que les blocs de theme pour passer par dessus */
+  :root,
+  :root[data-theme='light'],
+  :root[data-theme='dark'] {
+    --glass-bg: var(--color-bg-surface);
+    --color-bg-toolbar: var(--color-bg-surface);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root,
+  :root[data-theme='light'],
+  :root[data-theme='dark'] {
+    --glass-bg: var(--color-bg-surface);
+    --glass-bg-strong: var(--color-bg-surface);
+    --color-bg-toolbar: var(--color-bg-surface);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

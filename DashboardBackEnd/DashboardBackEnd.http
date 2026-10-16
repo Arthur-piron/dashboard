@@ -1,0 +1,141 @@
+@host = http://localhost:5119
+@email = alice@example.com
+@password = Password123
+
+### Register (then open http://localhost:8025 to read the confirmation email)
+POST {{host}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "username": "alice",
+  "password": "{{password}}"
+}
+
+### Login — 403 until the email is confirmed, then 200 with a token
+# @name login
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### Who am I (uses the token from the login request above)
+GET {{host}}/auth/me
+Authorization: Bearer {{login.response.body.$.token}}
+
+### Wrong password → 401
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "nope"
+}
+
+###
+GET {{host}}/about.json
+
+###
+GET {{host}}/services
+Authorization: Bearer {{login.response.body.$.token}}
+
+###
+GET {{host}}/widgets
+Authorization: Bearer {{login.response.body.$.token}}
+
+### Run a widget once without creating an instance
+GET {{host}}/widgets/weather.current/preview?city=Lille
+Authorization: Bearer {{login.response.body.$.token}}
+
+###
+GET {{host}}/widgets/weather.forecast/preview?city=Tokyo&days=3&unit=fahrenheit
+Authorization: Bearer {{login.response.body.$.token}}
+
+### Services the account has access to (subscribed = usable now)
+GET {{host}}/subscriptions
+Authorization: Bearer {{login.response.body.$.token}}
+
+### Subscribe to a service whose auth kind is apiKey (none shipped yet; GitHub uses OAuth)
+POST {{host}}/subscriptions/some-service
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "apiKey": "secret-key"
+}
+
+### Unsubscribe
+DELETE {{host}}/subscriptions/some-service
+Authorization: Bearer {{login.response.body.$.token}}
+
+### The dashboard: this user's widget instances
+GET {{host}}/widget-instances
+Authorization: Bearer {{login.response.body.$.token}}
+
+### Add a widget to the dashboard
+# @name instance
+POST {{host}}/widget-instances
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "widgetKey": "weather.current",
+  "config": { "city": "Lille", "unit": "celsius" },
+  "refreshRateSeconds": 900,
+  "position": { "x": 0, "y": 0, "width": 2, "height": 2 }
+}
+
+### A second instance of the same widget, another city
+POST {{host}}/widget-instances
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "widgetKey": "weather.forecast",
+  "config": { "city": "Tokyo", "days": 5, "unit": "celsius" },
+  "refreshRateSeconds": 3600
+}
+
+### Reconfigure it (config + refresh rate)
+PUT {{host}}/widget-instances/{{instance.response.body.$.id}}
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "config": { "city": "Paris" },
+  "refreshRateSeconds": 600
+}
+
+### Move or resize it
+PATCH {{host}}/widget-instances/{{instance.response.body.$.id}}/position
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{ "x": 2, "y": 1, "width": 3, "height": 2 }
+
+### Remove it from the dashboard
+DELETE {{host}}/widget-instances/{{instance.response.body.$.id}}
+Authorization: Bearer {{login.response.body.$.token}}
+
+### Duolingo: public learning profile
+GET {{host}}/widgets/duolingo.profile/preview?username=test
+Authorization: Bearer {{login.response.body.$.token}}
+
+### Duolingo: the course currently being learnt
+GET {{host}}/widgets/duolingo.course/preview?username=test
+Authorization: Bearer {{login.response.body.$.token}}
+
+### Duolingo: another course of the same user
+GET {{host}}/widgets/duolingo.course/preview?username=test&language=ja
+Authorization: Bearer {{login.response.body.$.token}}
+
+### The whole dashboard's data in one call (what the grid polls)
+GET {{host}}/widget-instances/data
+Authorization: Bearer {{login.response.body.$.token}}
+
+### One widget's latest refresh
+GET {{host}}/widget-instances/{{instance.response.body.$.id}}/data
+Authorization: Bearer {{login.response.body.$.token}}

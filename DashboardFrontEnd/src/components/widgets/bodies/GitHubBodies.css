@@ -1,0 +1,480 @@
+.github-body__identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.github-body__avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-avatar);
+  /* hairline ring so a white avatar does not melt into a light card */
+  box-shadow: 0 0 0 0.5px var(--color-separator);
+}
+
+.github-body__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.github-body__names {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.github-body__name {
+  overflow: hidden;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.github-body__identity:hover .github-body__name {
+  color: var(--color-accent-default);
+}
+
+.github-body__bio {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.github-body__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.github-body__meta li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+/* ---- profile ---- */
+
+.gh-profile {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gh-profile__about {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+/* stats sit at the bottom of a tall card */
+.gh-profile__stats {
+  margin-top: auto;
+}
+
+@container widget (min-width: 0px) {
+  .github-body__avatar {
+    width: clamp(48px, 20cqmin, 88px);
+    height: clamp(48px, 20cqmin, 88px);
+  }
+
+  .github-body__name {
+    font-size: clamp(18px, 6cqmin, 26px);
+  }
+}
+
+/* tall: four tiles in a 2 x 2 block */
+@container widget (min-height: 290px) {
+  .gh-profile__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* wide: who on the left, the numbers as tiles on the right */
+@container widget (min-width: 520px) {
+  .gh-profile {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 44%);
+    align-items: center;
+    gap: 24px;
+  }
+
+  .gh-profile__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 0;
+  }
+}
+
+/* short: identity and numbers, the rest waits for a taller card */
+@container widget (max-height: 200px) {
+  .github-body__bio,
+  .github-body__meta,
+  .github-body__joined {
+    display: none;
+  }
+}
+
+@container widget (max-height: 120px) {
+  .gh-profile__stats {
+    display: none;
+  }
+}
+
+/* ---- repositories: grouped list rows, like an ios inset table ---- */
+
+.github-body__list {
+  display: flex;
+  flex-direction: column;
+  margin: 0 -8px;
+  padding: 0;
+  list-style: none;
+}
+
+.github-body__list li + li {
+  border-top: 0.5px solid var(--color-separator);
+}
+
+.github-body__repo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  height: 100%;
+  padding: 9px 8px;
+  border-radius: var(--radius-sm);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.github-body__repo:hover {
+  background: var(--color-fill);
+}
+
+.github-body__repo-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.github-body__repo-name {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-accent-default);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.github-body__tag {
+  flex-shrink: 0;
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: var(--color-fill);
+}
+
+.github-body__repo-description {
+  overflow: hidden;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.github-body__repo-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 12px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.github-body__language,
+.github-body__count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.github-body__language-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-full);
+}
+
+.github-body__when {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--color-text-placeholder);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* tall: descriptions get a second line */
+@container widget (min-height: 420px) {
+  .github-body__repo-description {
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}
+
+/* wide: the rows become tiles, two or three per line */
+@container widget (min-width: 560px) {
+  .github-body__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0;
+  }
+
+  .github-body__list li + li {
+    border-top: none;
+  }
+
+  .github-body__repo {
+    padding: 12px 14px;
+    border-radius: var(--radius-md);
+    background: var(--color-fill);
+  }
+
+  .github-body__repo:hover {
+    background: var(--color-fill-strong);
+  }
+
+  .github-body__repo-description {
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .github-body__repo-meta {
+    margin-top: auto;
+    padding-top: 4px;
+  }
+}
+
+@container widget (min-width: 880px) {
+  .github-body__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ---- activity ---- */
+
+/* compact: total, a chart taking the height left, recent events */
+.gh-activity {
+  display: grid;
+  flex: 1;
+  grid-template-rows: auto minmax(64px, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'total'
+    'chart'
+    'events';
+  gap: 10px;
+  min-height: 0;
+}
+
+.gh-activity__total {
+  grid-area: total;
+}
+
+.gh-activity__chart {
+  grid-area: chart;
+}
+
+.gh-activity__events {
+  grid-area: events;
+}
+
+.github-body__total {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.github-body__unit {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.github-body__chart {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  min-height: 64px;
+}
+
+.github-body__bar-slot {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+/* the bar's height is a share of this track, the labels keep their own room */
+.github-body__bar-track {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+}
+
+.github-body__bar {
+  width: 100%;
+  max-width: 22px;
+  border-radius: 5px;
+  background: var(--color-switch-on);
+  transform-origin: bottom;
+  animation: github-bar-in 0.5s var(--ease-spring) backwards;
+}
+
+.github-body__bar--empty {
+  background: var(--color-fill-strong);
+}
+
+.github-body__bar-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-text-placeholder);
+}
+
+/* the count above each bar only shows on a chart tall enough to carry it */
+.github-body__bar-count {
+  display: none;
+  min-height: 1.2em;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+}
+
+.github-body__events {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 0 0;
+  list-style: none;
+  border-top: 0.5px solid var(--color-separator);
+}
+
+.github-body__event {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.github-body__event-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-default);
+  transform: translateY(-1px);
+}
+
+.github-body__event-text {
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.github-body__event-repo {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+@container widget (min-height: 300px) {
+  .github-body__bar-count {
+    display: block;
+  }
+
+  .github-body__bar {
+    max-width: 32px;
+    border-radius: 7px;
+  }
+}
+
+/* short: the total and the chart, events wait for a taller card */
+@container widget (max-height: 250px) {
+  .gh-activity {
+    grid-template-rows: auto minmax(48px, 1fr);
+  }
+
+  .gh-activity__events {
+    display: none;
+  }
+}
+
+/* wide: total and chart on the left, the events in a column on the right */
+@container widget (min-width: 560px) {
+  .gh-activity {
+    grid-template-rows: auto minmax(64px, 1fr);
+    grid-template-columns: minmax(0, 1.4fr) minmax(220px, 1fr);
+    grid-template-areas:
+      'total events'
+      'chart events';
+    column-gap: 24px;
+  }
+
+  .github-body__events.gh-activity__events {
+    display: flex;
+    align-self: start;
+    padding: 0 0 0 20px;
+    border-top: none;
+    border-left: 0.5px solid var(--color-separator);
+  }
+
+  .widget-body__note.gh-activity__events {
+    display: block;
+  }
+}
+
+@keyframes github-bar-in {
+  from {
+    transform: scaleY(0);
+  }
+}

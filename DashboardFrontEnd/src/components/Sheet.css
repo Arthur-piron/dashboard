@@ -1,0 +1,236 @@
+/* ios sheet in thick glass */
+.sheet {
+  margin: auto;
+  width: min(480px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  overflow: auto;
+  color: var(--color-text-primary);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-highlight), 0 24px 64px rgba(0, 0, 0, 0.18);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  backdrop-filter: blur(40px) saturate(180%);
+  animation: sheet-in 0.45s var(--ease-spring);
+}
+
+.sheet--sm {
+  width: min(360px, calc(100% - 32px));
+}
+
+.sheet::backdrop {
+  background: rgba(0, 0, 0, 0.32);
+  animation: backdrop-in 0.3s ease;
+}
+
+.sheet__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+}
+
+.sheet__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sheet__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  align-self: flex-start;
+  margin: -6px 0 4px -6px;
+  padding: 4px 6px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--color-accent-default);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.sheet__back svg {
+  transform: scaleX(-1);
+}
+
+.sheet__title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.sheet__subtitle {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+}
+
+.sheet__note {
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.4;
+  border-radius: var(--radius-sm);
+}
+
+.sheet__note--error {
+  color: var(--color-danger-text);
+  background: var(--color-danger-bg);
+}
+
+.sheet__note--info {
+  color: var(--color-text-secondary);
+  background: var(--color-fill);
+}
+
+.sheet__note a {
+  color: var(--color-accent-default);
+  font-weight: 600;
+}
+
+.sheet__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* centred alert, like an ios confirmation */
+.sheet--sm .sheet__body {
+  text-align: center;
+}
+
+.sheet--sm .sheet__actions {
+  justify-content: stretch;
+}
+
+.sheet--sm .sheet__actions .button {
+  flex: 1;
+}
+
+/* form field with an ios section label above it */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field__label {
+  padding-left: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.form-field__optional {
+  font-weight: 400;
+  color: var(--color-text-placeholder);
+}
+
+.form-field__hint {
+  padding-left: 4px;
+  font-size: 12px;
+  color: var(--color-text-placeholder);
+}
+
+.form-field__error {
+  padding-left: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-danger-text);
+}
+
+.form-field .field[aria-invalid='true'] {
+  border-color: var(--color-danger-text);
+}
+
+select.field {
+  appearance: none;
+  padding-right: 36px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--color-text-secondary) 50%),
+    linear-gradient(135deg, var(--color-text-secondary) 50%, transparent 50%);
+  background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+}
+
+/* wrapping chip group for refresh presets */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chips__item {
+  min-height: 32px;
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  background: var(--color-fill);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: transform 0.25s var(--ease-spring), background-color 0.2s ease;
+}
+
+.chips__item:active {
+  transform: scale(0.94);
+}
+
+.chips__item[aria-pressed='true'] {
+  color: var(--color-accent-contrast);
+  background: var(--color-accent-default);
+}
+
+@media (max-width: 600px) {
+  .sheet,
+  .sheet--sm {
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100dvh - 48px);
+    margin: auto 0 0;
+    border-bottom: none;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    animation-name: sheet-up;
+  }
+
+  /* grabber */
+  .sheet::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 5px;
+    margin: 8px auto 0;
+    background: var(--color-fill-strong);
+    border-radius: var(--radius-full);
+  }
+
+  .sheet__actions .button {
+    flex: 1;
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+}

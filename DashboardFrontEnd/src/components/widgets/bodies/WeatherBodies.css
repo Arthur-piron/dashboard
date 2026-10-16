@@ -1,0 +1,298 @@
+.weather-body__sky {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+/* ---- current weather ---- */
+
+/* compact: temperature and glyph side by side, stats underneath */
+.weather-now {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'hero glyph'
+    'stats stats';
+  gap: 10px 12px;
+}
+
+.weather-now__hero {
+  display: flex;
+  grid-area: hero;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.weather-now__glyph {
+  display: flex;
+  grid-area: glyph;
+  align-self: center;
+  font-size: 56px;
+  line-height: 0;
+}
+
+/* at the bottom of the card, whatever its height */
+.weather-now__stats {
+  grid-area: stats;
+  align-self: end;
+}
+
+@container widget (min-width: 0px) {
+  .weather-now__glyph {
+    font-size: clamp(52px, min(20cqi, 36cqb), 104px);
+  }
+}
+
+/* tall: hero and glyph centred in the room above, the stats as tiles at the bottom */
+@container widget (min-height: 290px) {
+  .weather-now {
+    grid-template-rows: 1fr auto;
+  }
+
+  .weather-now__hero {
+    align-self: center;
+  }
+}
+
+/* wide and short: hero and glyph side by side, the stat tiles on the right */
+@container widget (min-width: 520px) and (max-height: 289px) {
+  .weather-now {
+    grid-template-columns: auto auto minmax(0, 1fr);
+    grid-template-rows: 1fr;
+    grid-template-areas: 'hero glyph stats';
+    align-items: center;
+    gap: 12px 28px;
+  }
+
+  .weather-now__stats {
+    align-self: center;
+    justify-self: end;
+    width: min(100%, 320px);
+  }
+}
+
+/* short: only what fits on one glance */
+@container widget (max-height: 170px) {
+  .weather-now .weather-body__sky {
+    display: none;
+  }
+}
+
+@container widget (max-height: 100px) {
+  .weather-now__stats {
+    display: none;
+  }
+}
+
+/* ---- forecast ---- */
+
+/* rows by default, spread over the card's height */
+.forecast {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.forecast__day {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 6px 0;
+  font-size: 15px;
+  border-bottom: 0.5px solid var(--color-separator);
+}
+
+.forecast__day:last-child {
+  border-bottom: none;
+}
+
+.forecast__name {
+  flex-shrink: 0;
+  width: 46px;
+  font-weight: 600;
+}
+
+.forecast__glyph {
+  display: flex;
+  flex-shrink: 0;
+  font-size: 24px;
+  line-height: 0;
+}
+
+.forecast__sky {
+  display: none;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.forecast__rain {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-accent-default);
+  white-space: nowrap;
+}
+
+.forecast__rain:empty {
+  display: none;
+}
+
+.forecast__min,
+.forecast__max {
+  flex-shrink: 0;
+  min-width: 36px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* pushes the temperatures to the right edge when nothing else stretches */
+.forecast__min {
+  margin-left: auto;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.forecast__range {
+  position: relative;
+  display: none;
+  flex: 1;
+  min-width: 40px;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: var(--color-fill-strong);
+}
+
+.forecast__range-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #5ac8fa, #ffcc00 60%, #ff9500);
+}
+
+/* room for the temperature range bar */
+@container widget (min-width: 300px) {
+  .forecast__range {
+    display: block;
+  }
+
+  .forecast__min {
+    margin-left: 0;
+  }
+
+  .forecast__rain:not(:empty) {
+    margin-left: auto;
+  }
+}
+
+/* room for the sky description too */
+@container widget (min-width: 460px) {
+  .forecast__sky {
+    display: block;
+  }
+
+  .forecast__range {
+    flex: 0 0 26%;
+  }
+
+  .forecast__rain:not(:empty) {
+    margin-left: 0;
+  }
+}
+
+/* wide and short: one column per day, like the ios hourly strip */
+@container widget (min-width: 440px) and (min-aspect-ratio: 3 / 2) {
+  .forecast {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    align-items: stretch;
+  }
+
+  .forecast__day {
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    padding: 4px 6px;
+    border-bottom: none;
+    text-align: center;
+  }
+
+  .forecast__day + .forecast__day {
+    border-left: 0.5px solid var(--color-separator);
+  }
+
+  .forecast__name {
+    width: auto;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+
+  .forecast__glyph {
+    font-size: clamp(28px, 14cqb, 44px);
+  }
+
+  .forecast__sky,
+  .forecast__range {
+    display: none;
+  }
+
+  .forecast__max {
+    order: 1;
+    min-width: 0;
+    font-size: 17px;
+    text-align: center;
+  }
+
+  .forecast__min {
+    order: 2;
+    min-width: 0;
+    margin: 0;
+    text-align: center;
+  }
+
+  .forecast__rain,
+  .forecast__rain:not(:empty) {
+    order: 3;
+    margin: 0;
+  }
+}
+
+/* columns with height to spare: the description and bigger glyphs fill it */
+@container widget (min-width: 440px) and (min-aspect-ratio: 3 / 2) and (min-height: 300px) {
+  .forecast__day {
+    gap: 10px;
+  }
+
+  .forecast__glyph {
+    font-size: clamp(36px, 12cqb, 56px);
+  }
+
+  .forecast__sky {
+    display: block;
+    flex: none;
+    order: 4;
+    font-size: 13px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .forecast__max {
+    font-size: 20px;
+  }
+}

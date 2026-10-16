@@ -1,0 +1,22 @@
+bin/
+obj/
+.vs/
+.idea/
+*.user
+*.swp
+.DS_Store
+node_modules/
+dist/
+.env
+CLAUDE.md
+.agents
+.claude
+skills-lock.json
+
+# Secrets: only .env.example is committed
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+appsettings.*.local.json

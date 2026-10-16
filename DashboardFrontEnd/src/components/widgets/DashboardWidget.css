@@ -1,0 +1,46 @@
+.widget-card__tool--danger:hover {
+  color: var(--color-danger-text);
+}
+
+.widget-card__tool:disabled {
+  cursor: default;
+}
+
+/* the refresh icon turns while the server fetches */
+.widget-card__tool--spinning svg {
+  animation: widget-tool-spin 0.8s linear infinite;
+}
+
+/* edit mode: a hairline accent so it is obvious the cards can be changed */
+.widget-card--editing:not(.widget-card--resizing) {
+  outline: 1.5px dashed var(--color-separator);
+  outline-offset: -1.5px;
+}
+
+@keyframes widget-tool-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .widget-card__tool--spinning svg {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
+/* the card body as a size container: the widget bodies pick their layout from its width and height */
+.widget-frame {
+  container: widget / size;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.widget-frame::-webkit-scrollbar {
+  display: none;
+}

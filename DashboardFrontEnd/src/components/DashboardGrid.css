@@ -1,0 +1,55 @@
+/* 12-column grid; position.width / height are spans of these columns and rows */
+.widget-grid {
+  --grid-row: 88px;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 12), minmax(0, 1fr));
+  grid-auto-rows: var(--grid-row);
+  gap: 20px;
+  width: 100%;
+}
+
+/* free layout: every row exists, empty ones included, so gaps stay where the user left them */
+.widget-grid--free {
+  grid-template-rows: repeat(var(--grid-rows), var(--grid-row));
+}
+
+@media (max-width: 600px) {
+  .widget-grid {
+    gap: 16px;
+  }
+}
+
+/* where the dragged card will land: a recessed, dashed slot */
+.widget-grid__placeholder {
+  background: var(--color-fill);
+  border: 1.5px dashed var(--color-fill-strong);
+  border-radius: var(--radius-lg);
+  animation: placeholder-in 0.2s ease;
+}
+
+/* while dragging nothing else reacts to hover, so cards do not flicker under the pointer */
+.widget-grid--active .widget-card:not(.widget-card--dragging):not(.widget-card--resizing) {
+  pointer-events: none;
+}
+
+:root.is-dragging-widget,
+:root.is-dragging-widget * {
+  cursor: grabbing !important;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+:root.is-resizing-widget,
+:root.is-resizing-widget * {
+  cursor: nwse-resize !important;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@keyframes placeholder-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}

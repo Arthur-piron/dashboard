@@ -1,0 +1,27 @@
+.change-pill {
+  display: inline-flex;
+  /* ne s'etire pas dans la colonne du widget */
+  width: fit-content;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 9px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.change-pill p {
+  line-height: 1;
+}
+
+.change-pill--up {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.change-pill--down {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text);
+}
